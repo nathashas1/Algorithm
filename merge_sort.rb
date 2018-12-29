@@ -8,11 +8,11 @@ class Array
     merge(left, right, &prc)
   end
 
-  def merge(left, rigth, &prc)
+  def merge(left, right, &prc)
     prc ||= Proc.new{ |a,b| a<=>b }
     result = []
-    until left.empty? || rigth.empty?
-      small = prc.call(left[0], rigth[0])
+    until left.empty? || right.empty?
+      small = prc.call(left[0], right[0])
       if small < 1
         result << left.shift
       else
