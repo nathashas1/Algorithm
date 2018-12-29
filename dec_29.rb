@@ -1,15 +1,9 @@
 class BinaryMinheap
-attr_reader :store, :prc
-
+  attr_reader :store, :prc
   def initialize(&prc)
-    prc ||= Proc.new{|a,b| a<=>b}
+    prc ||= Proc.new { |a,b| a<=>b }
+    @store = []
     @prc = prc
-    @store= []
-    puts "gelo"
-  end
-
-  def count
-    @store.length
   end
 
   def push(val)
@@ -18,10 +12,11 @@ attr_reader :store, :prc
   end
 
   def self.heapify_up(array, child_idx, len, &prc)
-    prc ||= Proc.new{|a,b| a<=>b}
+    prc ||= Proc.new { |a,b| a<=>b }
     return array if child_idx == 0
     parent_idx = (child_idx-1)/2
-    parent_val, child_val = [array[parent_idx], array[child_idx]]
+    parent_val = array[parent_idx]
+    child_val = array[child_idx]
     if prc.call(child_val, parent_val) < 0
       array[child_idx], array[parent_idx] = array[parent_idx], array[child_idx]
       self.heapify_up(array, parent_idx, len, &prc)
@@ -30,22 +25,21 @@ attr_reader :store, :prc
   end
 
   def extract
-    @store[0], @store[@store.length-1] = @store[@store.length - 1], @store[0]
+    @store[@store.length - 1], @store[0] = @store[0], @store[@store.length - 1]
     val = @store.pop
-    BinaryMinheap.heapify_down(@store, 0, @store.length, &@prc)
+    BinaryMinheap.heapify_down(@store, 0 , @store.length, &prc)
     val
   end
 
   def self.child_indices(parent_idx, len)
-    indices = [2*parent_idx+1, 2*parent_idx+2]
+    indices = [2*parent_idx + 1, 2* parent_idx+2]
     indices.pop if indices.last >= len
     indices.pop if indices.last >= len
     indices
   end
 
-
-  def self.heapify_down(array, parent_idx, len, &prc)
-    prc ||= Proc.new{ |a,b| a<=>b }
+  def heapify_down(array, parent_idx, len, &prc)
+    prc ||= Proc.new { |a,b| a<=>b }
     idxs = self.child_indices(parent_idx, len)
     return array if idxs.empty?
     if idxs.length == 1
@@ -65,4 +59,5 @@ attr_reader :store, :prc
     end
     array
   end
+
 end
