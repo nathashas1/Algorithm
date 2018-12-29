@@ -5,6 +5,7 @@ attr_reader :store, :prc
     prc ||= Proc.new{|a,b| a<=>b}
     @prc = prc
     @store= []
+    puts "gelo"
   end
 
   def count
@@ -31,7 +32,7 @@ attr_reader :store, :prc
   def extract
     @store[0], @store[@store.length-1] = @store[@store.length - 1], @store[0]
     val = @store.pop
-    BinaryMinheap.heapify_down(@store, 0, @store.length, &prc)
+    BinaryMinheap.heapify_down(@store, 0, @store.length, &@prc)
     val
   end
 
@@ -42,16 +43,18 @@ attr_reader :store, :prc
     indices
   end
 
+
   def self.heapify_down(array, parent_idx, len, &prc)
     prc ||= Proc.new{ |a,b| a<=>b }
     idxs = self.child_indices(parent_idx, len)
-    if idxs.length = 1
+    return array if idxs.empty?
+    if idxs.length == 1
       smallest_idx = idxs[0]
     else
       if prc.call(array[idxs[0]], array[idxs[1]]) < 0
-        smallest_idx = array[idxs[0]]
+        smallest_idx = idxs[0]
       else
-        smallest_idx = array[idxs[1]]
+        smallest_idx = idxs[1]
       end
     end
     smallest_child_val = array[smallest_idx]
