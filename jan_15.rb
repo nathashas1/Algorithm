@@ -53,7 +53,7 @@ class BinaryMinheap
         smallest_idx = idxs[1]
       end
     end
-    # smallest_child_val = array[smallest_idx]
+    smallest_child_val = array[smallest_idx]
     parent_val = array[parent_idx]
     if prc.call(smallest_child_val, parent_val) < 0
       array[smallest_idx], array[parent_idx] = array[parent_idx], array[smallest_idx]
