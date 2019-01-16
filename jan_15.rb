@@ -62,3 +62,17 @@ class BinaryMinheap
     array
   end
 end
+
+class Array
+  def merge_sort(&prc)
+    prc ||= Proc.new{ |a,b| a<=>b }
+    return self if self.length == 1
+    mid = self.length/2
+    left = self[0...mid].merge_sort(&prc)
+    right = self[mid..-1].merge_sort(&prc)
+    merge(left, right, &prc)
+  end
+
+  def merge
+  end
+end
