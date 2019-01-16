@@ -73,6 +73,16 @@ class Array
     merge(left, right, &prc)
   end
 
-  def merge
+    def merge(left, right, &prc)
+      result = []
+      until left.empty? || right.empty?
+        small = prc.call(left[0], right[0])
+        if small < 1
+          result << left.shift
+        else
+          result << right.shift
+        end
+      end
+      result + left + right
+    end
   end
-end
