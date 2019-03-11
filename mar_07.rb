@@ -81,3 +81,26 @@ class Array
     result+left+right
     end
   end
+
+  def self.heapify_down(array, parent_idx, len, &prc)
+    prc ||= Proc.new{ |a,b| a<=>b }
+    idxs = self.child_indices(parent_idx, len)
+    return array if idxs.empty?
+    if idxs.length == 1
+      smallest_idx = idxs[0]
+    else
+      if prc.call(array[idxs[0]], array[idxs[1]]) < 0
+        smallest_idx = idxs[0]
+      else
+        smallest_idx = idxs[1]
+      end
+    end
+    smallest_child_val = array[smallest_idx]
+    parent_val = array[parent_idx]
+    if prc.call(smallest_child_val, parent_val) < 0
+      array[smallest_idx], array[parent_idx] = array[parent_idx], array[smallest_idx]
+      self.heapify_down(array, smallest_idx, len, &prc)
+    end
+    array
+  end
+end
