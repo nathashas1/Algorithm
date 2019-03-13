@@ -94,4 +94,13 @@ class BinaryMinheap
     end
     result+left+right
     end
-  end
+
+
+  class Array
+    def merge_sort
+      return self if self.length  == 1
+      mid  = self.length/2
+      left  = self[0...mid].merge_sort
+      right = self[mid..-1].merge_sort
+      merge(left, right)
+    end
